@@ -75,6 +75,7 @@ public class SmsReceiver extends BroadcastReceiver {
                 	values.put("account_id", info.account_id);
                 	values.put("date", b.getInt(SmsFilter.KEY_DATE));
                 	values.put("amount", b.getInt(SmsFilter.KEY_MONEY));
+                	values.put("item", b.getString(SmsFilter.KEY_ITEM));
                 	try{
                 		values.put("msg", msgs[i].getMessageBody().toString());
                 	}catch(NullPointerException e){
