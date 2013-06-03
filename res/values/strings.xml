@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Whoochoo문자 자동입력 설정</string>
+    <string name="action_settings">Settings</string>
+    <string name="whoochoo_sms_board_help">왼쪽이 후잉 계정이며, 해당 계정에 맞는 카드 이름을 오른쪽에서 선택해주세요. 이는 후잉의 계정 이름과 실제 카드 이름이 같지 않을 수 있기 때문입니다.</string>
+    <string name="whoochoo_sms_board_no_data">Whoochoo가 설치되어 있지 않거나, 후잉에서 카드 항목이 없습니다.</string>
+    <string name="whoochoo_sms_toast_check_duplication">중복 항목이 있습니다. 확인해주세요 </string>
+    <string name="whoochoo_sms_toast_saved">저장되었습니다. 뒤로가기 버튼을 누르면 종료합니다 </string>
+    <string name="whoochoo_sms_activity_title">카드SMS 자동 수신 설정</string>
+    <string name="whoochoo_sms_btn_confirm">확인</string>
+</resources>
