@@ -168,6 +168,8 @@ public class SmsFilter {
 		resultText = resultText.replace('\n', ' ');
 		resultText = resultText.replace('.', ' ');
 		
+		resultText = resultText.replace("      ", " ");
+		resultText = resultText.replace("    ", " ");
 		resultText = resultText.replace("  ", " ");
 		resultText = resultText.replace("  ", " ");
 		 
@@ -209,7 +211,7 @@ public class SmsFilter {
         int day = rightNow.get(Calendar.DAY_OF_MONTH);
         
         int today = year * 10000 + month * 100 + day;
-        convertDate = year + convertDate;
+        convertDate = (year * 10000) + convertDate;
         int convertDateInt = 0;
         try{
              convertDateInt = Integer.valueOf(convertDate);
