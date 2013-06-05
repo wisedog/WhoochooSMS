@@ -77,6 +77,11 @@ public class WhooingSmsUtil {
         catch(NumberFormatException e){
             e.printStackTrace();
         }
+        
+        //guard wrong date
+        if(convertDateInt < ((year * 10000) + 101)){
+        	convertDateInt = today;
+        }
         return convertDateInt; 
     }
 }
