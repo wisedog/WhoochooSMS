@@ -36,13 +36,13 @@ public class SmsFilterTest extends TestCase {
 	}
 
 	public void testFilterSender() {
-        assertEquals(0, mFilter.filteringSender("15886700"));
+        assertEquals(1, mFilter.filteringSender("15886700"));
         assertEquals(-1, mFilter.filteringSender("1112222"));
         assertEquals(-1, mFilter.filteringSender(null));
     }
     
     public void testFilterMsgKEB(){
-        Bundle b = mFilter.filterMessage("외환카드 홍길*님 0*0*\n일시불  22,000원\n음식점이여 05/21 19:48\n누적 1,234,567",  SmsFilterData.CODE_KEB);
+        Bundle b = mFilter.filterMessage("외환카드 홍길*님 0*0*\n일시불      22,000원\n음식점이여 05/21 19:48\n누적       1,234,567",  SmsFilterData.CODE_KEB);
         assertNotNull(b);
         
         assertEquals(20130521, b.getInt(SmsFilter.KEY_DATE, -1));

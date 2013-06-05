@@ -15,7 +15,6 @@
  */
 package net.wisedog.android.whooing.sms.br;
 
-import java.util.Calendar;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -45,21 +44,21 @@ public class SmsFilter {
         switch(cardCode){
         case SmsFilterData.CODE_KEB:
             b = new Bundle();
-            b.putInt(KEY_DATE, convertWhooingDate(tokens[6]));
+            b.putInt(KEY_DATE, WhooingSmsUtil.convertWhooingDate(tokens[6]));
             b.putString(KEY_ITEM, tokens[5]);
             b.putInt(KEY_MONEY, convertToInt(tokens[4]));            
             break;
             
         case SmsFilterData.CODE_LOTTE:
         	b = new Bundle();
-        	b.putInt(KEY_DATE, convertWhooingDate(tokens[4]));
+        	b.putInt(KEY_DATE, WhooingSmsUtil.convertWhooingDate(tokens[4]));
             b.putString(KEY_ITEM, tokens[6]);
             b.putInt(KEY_MONEY, convertToInt(tokens[2]));
             break;
             
         case SmsFilterData.CODE_SAMSUNG:
 	    	b = new Bundle();
-	    	b.putInt(KEY_DATE, convertWhooingDate(tokens[1]));
+	    	b.putInt(KEY_DATE, WhooingSmsUtil.convertWhooingDate(tokens[1]));
 	    	if(tokens[3].contains("원")){
 	    	    b.putInt(KEY_MONEY, convertToInt(tokens[3]));
 	    	    b.putString(KEY_ITEM, tokens[5]);
@@ -73,7 +72,7 @@ public class SmsFilter {
 	        
         case SmsFilterData.CODE_KB:
 	    	b = new Bundle();
-	    	b.putInt(KEY_DATE, convertWhooingDate(tokens[3]));
+	    	b.putInt(KEY_DATE, WhooingSmsUtil.convertWhooingDate(tokens[3]));
 	        b.putString(KEY_ITEM, tokens[6]);
 	        b.putInt(KEY_MONEY, convertToInt(tokens[5]));
         	break;
@@ -86,7 +85,7 @@ public class SmsFilter {
         	}
 
 	    	b = new Bundle();
-	    	b.putInt(KEY_DATE, convertWhooingDate(tokens[1]));
+	    	b.putInt(KEY_DATE, WhooingSmsUtil.convertWhooingDate(tokens[1]));
 	        b.putString(KEY_ITEM, tokens[3]);
 	        b.putInt(KEY_MONEY, convertToInt(msgToken[1]));
         	break;
@@ -98,14 +97,14 @@ public class SmsFilter {
         		break;
         	}
         	b = new Bundle();
-	    	b.putInt(KEY_DATE, convertWhooingDate(tokens[1]));
+	    	b.putInt(KEY_DATE, WhooingSmsUtil.convertWhooingDate(tokens[1]));
 	        b.putString(KEY_ITEM, tokens[4]);
 	        b.putInt(KEY_MONEY, convertToInt(msgToken1[1]));
         	break;
         	
         case SmsFilterData.CODE_WOORI:
         	b = new Bundle();
-        	b.putInt(KEY_DATE, convertWhooingDate(tokens[1]));
+        	b.putInt(KEY_DATE, WhooingSmsUtil.convertWhooingDate(tokens[1]));
             b.putString(KEY_ITEM, tokens[5]);
             Pattern pattern  = Pattern.compile("[\\d,]*원");
             Matcher matcher = pattern.matcher(tokens[3]);
@@ -117,7 +116,7 @@ public class SmsFilter {
         	break;
         case SmsFilterData.CODE_WOORICHECK:
         	b = new Bundle();
-            b.putInt(KEY_DATE, convertWhooingDate(tokens[4]));
+            b.putInt(KEY_DATE, WhooingSmsUtil.convertWhooingDate(tokens[4]));
             b.putString(KEY_ITEM, tokens[6]);
             b.putInt(KEY_MONEY, convertToInt(tokens[2]));
             b.putBoolean(KEY_CHECKCARD, true);
@@ -129,7 +128,7 @@ public class SmsFilter {
         	//"[현대카드C]-승인\n정원석님\n03/25 07:35\n13,500원(일시불)\n택시(서울)",
         	if(tokens[3].contains("/")){
         		b.putString(KEY_ITEM, tokens[5]);
-        		b.putInt(KEY_DATE, convertWhooingDate(tokens[2]));
+        		b.putInt(KEY_DATE, WhooingSmsUtil.convertWhooingDate(tokens[2]));
         		amountStr = tokens[4];
         	}
         	//"[현대카드M3]-승인\n홍길*님\n37,500원(일시불)\n서울불고기\n누적:1,189,280원",
@@ -194,38 +193,7 @@ public class SmsFilter {
         return amountInt;
     }
     
-    /**
-     * Convert string format date data to whooing date format integer
-     * @param   dateStr     Date data formatted string like "05/21"
-     * @return   Return whooing style integer date like 20121212 otherwise -1
-     * */
-    private int convertWhooingDate(String dateStr){
-        String convertDate = dateStr.replace("/","");
-        if(convertDate.length() == 3){
-            convertDate = "0" + convertDate;
-        }
-        Calendar rightNow = Calendar.getInstance(); 
-        
-        int year = rightNow.get(Calendar.YEAR);
-        int month = rightNow.get(Calendar.MONTH) + 1;
-        int day = rightNow.get(Calendar.DAY_OF_MONTH);
-        
-        int today = year * 10000 + month * 100 + day;
-        convertDate = (year * 10000) + convertDate;
-        int convertDateInt = 0;
-        try{
-             convertDateInt = Integer.valueOf(convertDate);
-             // In case of receiving message 12/31 on 1 Jan
-             if((today / 10000) < (convertDateInt / 10000)){
-                 convertDateInt -= 10000;
-             }
-             
-        }
-        catch(NumberFormatException e){
-            e.printStackTrace();
-        }
-        return convertDateInt; 
-    }
+    
 
 	/**
      * Filter sender address. This is Positive system(Originally prohibit, excepts are allowed).

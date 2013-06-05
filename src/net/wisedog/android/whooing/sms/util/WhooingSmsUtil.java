@@ -47,4 +47,36 @@ public class WhooingSmsUtil {
         }
         return date;
 	}
+	/**
+     * Convert string format date data to whooing date format integer
+     * @param   dateStr     Date data formatted string like "05/21"
+     * @return   Return whooing style integer date like 20121212 otherwise -1
+     * */
+    static public int convertWhooingDate(String dateStr){
+        String convertDate = dateStr.replace("/","");
+        if(convertDate.length() == 3){
+            convertDate = "0" + convertDate;
+        }
+        Calendar rightNow = Calendar.getInstance(); 
+        
+        int year = rightNow.get(Calendar.YEAR);
+        int month = rightNow.get(Calendar.MONTH) + 1;
+        int day = rightNow.get(Calendar.DAY_OF_MONTH);
+        
+        int today = year * 10000 + month * 100 + day;
+        convertDate = year + convertDate;
+        int convertDateInt = 0;
+        try{
+             convertDateInt = Integer.valueOf(convertDate);
+             // In case of receiving message 12/31 on 1 Jan
+             if((today / 10000) < (convertDateInt / 10000)){
+                 convertDateInt -= 10000;
+             }
+             
+        }
+        catch(NumberFormatException e){
+            e.printStackTrace();
+        }
+        return convertDateInt; 
+    }
 }
