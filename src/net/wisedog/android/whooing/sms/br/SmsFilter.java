@@ -126,9 +126,10 @@ public class SmsFilter {
         	b = new Bundle();
         	String amountStr = null;
         	//"[현대카드C]-승인\n정원석님\n03/25 07:35\n13,500원(일시불)\n택시(서울)",
-        	if(tokens[3].contains("/")){
+        	if(tokens[2].contains("/")){
         		b.putString(KEY_ITEM, tokens[5]);
         		b.putInt(KEY_DATE, WhooingSmsUtil.convertWhooingDate(tokens[2]));
+        		b.putBoolean(KEY_CHECKCARD, true);
         		amountStr = tokens[4];
         	}
         	//"[현대카드M3]-승인\n홍길*님\n37,500원(일시불)\n서울불고기\n누적:1,189,280원",
@@ -136,9 +137,10 @@ public class SmsFilter {
         		b.putString(KEY_ITEM, tokens[3]);
         		b.putInt(KEY_DATE, WhooingSmsUtil.getTodayYYYYMMDDInt());
         		amountStr = tokens[2];
+        		b.putBoolean(KEY_CHECKCARD, false);
         	}
         	if(amountStr != null){
-        		String[] amountTokens = amountStr.split("(");
+        		String[] amountTokens = amountStr.split("\\(");
         		b.putInt(KEY_MONEY, convertToInt(amountTokens[0]));
         	}
         	break;

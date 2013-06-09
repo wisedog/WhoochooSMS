@@ -18,6 +18,7 @@ package net.wisedog.android.whooing.sms.test;
 import android.os.Bundle;
 import net.wisedog.android.whooing.sms.br.SmsFilter;
 import net.wisedog.android.whooing.sms.br.SmsFilterData;
+import net.wisedog.android.whooing.sms.util.WhooingSmsUtil;
 import junit.framework.TestCase;
 
 public class SmsFilterTest extends TestCase {
@@ -140,9 +141,27 @@ public class SmsFilterTest extends TestCase {
         
     }
     
+    public void testFilterMsgHyundai1(){
+    	Bundle b = mFilter.filterMessage("[현대카드M3]-승인\n홍길*님\n37,500원(일시불)\n서울불고기\n누적:1,189,280원", SmsFilterData.CODE_HYUNDAI);
+    	assertNotNull(b);
+    	
+    	assertEquals(WhooingSmsUtil.getTodayYYYYMMDDInt(), b.getInt(SmsFilter.KEY_DATE, -1));
+        assertEquals("서울불고기", b.getString(SmsFilter.KEY_ITEM));
+        assertEquals(37500, b.getInt(SmsFilter.KEY_MONEY));
+        assertEquals(SmsFilterData.CODE_HYUNDAI, b.getInt(SmsFilter.KEY_CARDNAME, -1));
+        assertEquals(false, b.getBoolean(SmsFilter.KEY_CHECKCARD, false));
+    	
+    }
+    
     public void testFilterMsgHyundai(){
-        //"[현대카드M3]-승인\n홍길*님\n37,500원(일시불)\n서울불고기\n누적:1,189,280원",
-        //"[현대카드C]-승인\n정원석님\n03/25 07:35\n13,500원(일시불)\n택시(서울)",
+    	Bundle b = mFilter.filterMessage("[현대카드C]-승인\n정**님\n03/25 07:35\n13,500원(일시불)\n택시(서울)", SmsFilterData.CODE_HYUNDAI);
+    	assertNotNull(b);
+    	
+    	assertEquals(20130325, b.getInt(SmsFilter.KEY_DATE, -1));
+        assertEquals("택시(서울)", b.getString(SmsFilter.KEY_ITEM));
+        assertEquals(13500, b.getInt(SmsFilter.KEY_MONEY));
+        assertEquals(SmsFilterData.CODE_HYUNDAI, b.getInt(SmsFilter.KEY_CARDNAME, -1));
+        assertEquals(true, b.getBoolean(SmsFilter.KEY_CHECKCARD, false));
     }
     
 }
